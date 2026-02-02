@@ -14,8 +14,8 @@ if (isset($_POST['dodaj'])) {
     $imie = $_POST['imie'];
     $nazwisko = $_POST['nazwisko'];
     $conn->query("INSERT INTO users (imie, nazwisko, data_dodania) VALUES ('$imie', '$nazwisko', NOW())");
-    header("Location: baza.php");
-    exit();
+    // header("Location: baza.php");
+    // exit();
 }
 
 if (isset($_POST['zapisz'])) {
@@ -23,8 +23,8 @@ if (isset($_POST['zapisz'])) {
     $imie = $_POST['imie'];
     $nazwisko = $_POST['nazwisko'];
     $conn->query("UPDATE users SET imie='$imie', nazwisko='$nazwisko' WHERE id=$id");
-    header("Location: baza.php");
-    exit();
+    // header("Location: baza.php");
+    // exit();
 }
 
 $edit=false;
@@ -36,6 +36,7 @@ if (isset($_GET['edytuj'])) {
 
 $sql = 'SELECT id, imie, nazwisko, data_dodania FROM users';
 $result = $conn->query($sql);
+print_r($_POST);
 ?>
 
 <!DOCTYPE html>
@@ -63,14 +64,6 @@ $result = $conn->query($sql);
                     <?= $edit ? 'Zapisz' : 'Dodaj' ?>
                 </button>
             </form>
-            <!--<form method="post" action="baza.php">
-                <?php if ($edit): ?>
-                    <input type="hidden" name="id" value="<?= $user['id'] ?>">
-                <?php endif; ?>
-                <label>Imię: <input type="text" name="imie" value="<?= $edit ? $user['imie'] : '' ?>"></label><br>
-                <label>Nazwisko: <input type="text" name="nazwisko" value="<?= $edit ? $user['nazwisko'] : '' ?>"></label><br>
-                <input type="submit" name="<?= $edit ? 'zapisz' : 'dodaj' ?>" value="<?= $edit ? 'Zapisz' : 'Dodaj' ?>">
-            </form>-->
 
             <?php
             if ($result->num_rows > 0) {
