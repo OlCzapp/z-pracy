@@ -34,6 +34,13 @@ if (isset($_GET['edytuj'])) {
     $user = $conn->query("SELECT * FROM users WHERE id=$id")->fetch_assoc();
 }
 
+$del=false;
+if (isset($_GET['usun'])) {
+    $del=true;
+    $id = $_GET['usun'];
+    $user = $conn->query("DELETE FROM users WHERE id=$id");
+}
+
 $sql = 'SELECT id, imie, nazwisko, data_dodania FROM users';
 $result = $conn->query($sql);
 print_r($_POST);
@@ -53,6 +60,8 @@ print_r($_POST);
                 <th>Imię</th>
                 <th>Nazwisko</th>
                 <th>Data Dodania</th>
+                <th>Akcje</th>
+                <th>USUN</th>
             </tr>
 
             <h3><?= $edit ? "edytuj uż." : "dodaj nowego użytkownika" ?></h3>
@@ -73,6 +82,8 @@ print_r($_POST);
                             <td>" . $row["imie"] . "</td>
                             <td>" . $row["nazwisko"] . "</td>
                             <td>" . $row["data_dodania"] . "</td>
+                            <td><a href='?edytuj=" . $row["id"] . "'>Edytuj</a></td>
+                            <td><a href='?usun=" . $row["id"] . "' onclick='return confirm(\"Czy na pewno chcesz usunąć tego użytkownika?\")'>Usuń</a></td>
                           </tr>";
                 }
             } else {
@@ -84,3 +95,4 @@ print_r($_POST);
 
     </body>
 </html>
+<!--dodać usuń potwiedzany konfirmem-->
