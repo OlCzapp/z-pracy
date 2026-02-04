@@ -89,7 +89,7 @@ $result = $conn->query("SELECT * FROM users");
                             Dodaj
                         </button>
 
-                        <button type="submit" name="zapisz" class="btn btn-warning">
+                        <button type="submit" name="zapisz" class="btn btn-warning" id="editBtn">
                             Edytuj
                         </button>
 
@@ -112,7 +112,7 @@ $result = $conn->query("SELECT * FROM users");
         </thead>
         <tbody>
         <?php while ($row = $result->fetch_assoc()) { ?>
-            <tr>
+            <tr data-id="<?= $row['id'] ?>"data-imie="<?= htmlspecialchars($row['imie']) ?>"data-nazwisko="<?= htmlspecialchars($row['nazwisko']) ?>"> 
                 <td><?= $row['id'] ?></td>
                 <td><?= $row['imie'] ?></td>
                 <td><?= $row['nazwisko'] ?></td>
@@ -131,6 +131,38 @@ $result = $conn->query("SELECT * FROM users");
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+document.getElementById('editBtn').addEventListener('click', function (e) {
+    const idInput = document.querySelector('input[name="id"]').value;
+
+    if (!idInput) {
+        alert("Podaj ID użytkownika do edycji.");
+        e.preventDefault();
+        return;
+    }
+
+    const row = document.querySelector(
+        'tr[data-id="' + idInput + '"]'
+    );
+
+    if (!row) {
+        alert("Nie znaleziono użytkownika o ID " + idInput);
+        e.preventDefault();
+        return;
+    }
+
+    const imie = row.dataset.imie;
+    const nazwisko = row.dataset.nazwisko;
+
+    const ok = confirm(
+        imie + " " + nazwisko +
+        ", o id " + idInput +
+        ", czy na pewno chcesz edytować?"
+    );
+
+    if (!ok) {
+        e.preventDefault(); // BLOKUJE SUBMIT
+    }
+});
+</script>
 </html>
